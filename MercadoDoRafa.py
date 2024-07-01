@@ -1,6 +1,5 @@
 usuarios = {
-    "Eduardin": ["email@gmail.com", "12313", "administrador"],
-    "Rafa": ["lcoco@gmail.com", "56798", "usuario"]
+
 }
 
 produtos = [
