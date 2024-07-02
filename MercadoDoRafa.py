@@ -1,39 +1,43 @@
-usuarios = {
-
-}
-
-produtos = [
-    {"nome":"Banana", "preco":5.00, "descricao":"Banana nanica madura"}
+usuarios = [
+    {"nome": "rafa", "email": "blabla", "senha": "123123", "funcao": "administrador"},
+    {"nome": "derek", "email": "lcoco", "senha": "15555", "funcao": "usuario"}
 ]
 
+produtos = [
+    {"nome": "Banana", "preco": 5.00, "descricao": "Banana nanica madura"}
+]
+carrinho = []
 def Cadastro():
-    nome = input("Digite seu nome ")
-    email = input("Digite seu e-mail ")
-    senha = input("Digite sua senha ")
-    funcao = input("Digite sua função administrador/usuario  ")
+    nome = input("Digite seu nome: ")
+    email = input("Digite seu e-mail: ")
+    senha = input("Digite sua senha: ")
+    funcao = input("Digite sua função (administrador/usuario): ")
 
-    for i in usuarios:  
-        while usuarios[i][0] == email:
-            print("E-mail já cadastrado \nDigite outro email")
-            email = input("Digite seu e-mail ")
-          
-    usuarios[nome] = [email,senha,funcao]
-    print("Cadatro efetuado")
+    for usuario in usuarios:
+        if usuario["email"] == email:
+            print("E-mail já cadastrado. Digite outro e-mail.")
+            return
 
+    novo_usuario = {
+        "nome": nome,
+        "email": email,
+        "senha": senha,
+        "funcao": funcao
+    }
+    usuarios.append(novo_usuario)
+    print("Cadastro efetuado com sucesso.")
 
 def LoKin():
-    email = input("Digite seu e-mail ")
-    senha = input("Digite sua senha ")
-    
+    email = input("Digite seu e-mail: ")
+    senha = input("Digite sua senha: ")
 
-    for i in usuarios:
-        if usuarios[i][0] == email and usuarios[i][1] == senha:
-            print("Login efetuado")
-            return usuarios[i][2]
-            
-        else:
-            print("Usuario não cadastrado ou senha incorreta \nRealize o cadastro para poder entrar")
-            return Cadastro()
+
+    for  i in usuarios:
+        if i["email"] == email and i["senha"] == senha:
+            print(f"Bem-vindo, {i['nome']}!")
+            return i["funcao"]
+        
+    print("Usuário não cadastrado ou senha incorreta. Realize o cadastro para poder entrar.")
  
 
 def ExibirCatalogo():
@@ -41,7 +45,6 @@ def ExibirCatalogo():
         print(f"Nome: {i['nome']}, Preço: {i['preco']}, Descrição: {i['descricao']}")
 
         
-carrinho = []
 
 def AddCarinho(nome_produtos):
     for j in produtos:
@@ -55,7 +58,7 @@ def AddCarinho(nome_produtos):
 
 def ExcCarrinho(nome_produtos):
     for i in carrinho:
-        if i == nome_produtos:
+        if i["nome"] == nome_produtos:
             carrinho.remove(i)
 
         else:
@@ -70,17 +73,19 @@ def VizualizarCarrinho():
 
 
 def total():
+    valor = 0
     for i in carrinho:
         valor += i["preco"]
         print(f"total é de: {valor}")
     
 HistoricoCompras = []
 def FinalizarPagamento():
-
+    global carrinho
     total()
     Info = int(input("Digite a senha do cartão "))
 
     print("compra finalizada")
+    
     HistoricoCompras.append(carrinho)
     carrinho = []
 
@@ -127,7 +132,7 @@ def MenuUsuario():
         elif opcao == 3:
             ExibirCatalogo()
             nome_prd = input("Digite qual produto deseja remover do carrinho ")
-            ExcCarrinho()
+            ExcCarrinho(nome_prd)
 
         elif opcao == 4:
             VizualizarCarrinho()
